@@ -1,0 +1,88 @@
+<html>
+<head>
+
+    <!-- bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/bootstrap-grid.css" rel="stylesheet" />
+    <link href="css/stylepg.css" rel="stylesheet" />
+
+</head>
+
+<body onload="myPlaces(arr)" id="MasterBody" runat="server" style="padding-left:15px;padding-right: 15px;">
+
+<div id="PageBody" runat="server">
+
+    <h1>SprezzaTweet</h1>
+
+    <!--Toggles for Latest, Popular, Watching-->
+    <div class="options clearfix" style="float:right">
+        <div class="ck-button">
+            <label><input type="checkbox" value="1" name="DMi" checked="checked"><span>Latest</span></label>
+        </div>
+
+        <div class="ck-button">
+            <label><input type="checkbox" value="1" name="DKm" checked="checked"><span>Popular</span></label>
+        </div>
+
+        <div class="ck-button">
+            <label><input type="checkbox" value="1" name="DM" checked="checked"><span>Watching</span></label>
+        </div>
+    </div>
+
+    <!-- T A B L E -->
+    <table id="table_locs" style="width:100%;font-size:larger;webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;!important;" class="tb1-header table table-bordered table-responsive "> <!--tableorter-->
+        <thead> <!---webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;-->
+        <tr style="font-weight: bold;">
+            <th>Index</th>
+            <th>Name</th>
+            <th>Lat / Long</th>
+            <th>Rating</th>
+            <th class="DMi">Latest</th>
+            <th class="DKm">Popular</th>
+            <th class="DM">Watching</th>
+        </tr>
+        </thead>
+
+        <tbody id="tbl">
+        <tr class="rowp">
+            <td>1</td>
+            <td>Place A</td>
+            <td>-26.0594802,28.0609437</td>
+            <td>5</td>
+            <td class="DMi" id="pAMi"></td>
+            <td class="DKm" id="pAKm"></td>
+            <td class="DM"  id="pAM" ></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <!-- <br/>-->
+
+    <footer>
+        by Darshan Kassen <br/>
+        dkassen27@gmail.com
+    </footer>
+
+
+    <!-- FORMATTING -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-3.1.1.js"></script>
+
+    <!--FEATURES--
+    <!--ToggleCols-->
+    <link href="Content/togglecols/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="Content/togglecols/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/togglecols/css/jquery-ui.css" rel="stylesheet" />
+    <link href="Content/togglecols/css/style.css" rel="stylesheet" />
+    <script src="Content/togglecols/js/index.js"></script>
+    <script src="Content/togglecols/js/jquery-ui.min.js"></script>
+    <script src="Content/togglecols/js/jquery.min.js"></script>
+
+
+
+</div>
+
+</body>
+
+</html>
