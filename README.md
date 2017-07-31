@@ -1,2 +1,3 @@
-# TwitterReader
-Twitter Reader
+# SprezzaTweet 
+
+Web-based Twitter Reader
