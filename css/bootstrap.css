@@ -307,11 +307,11 @@ template {
   }
   .table td,
   .table th {
-    background-color: #fff !important;
+    background-color: transparent !important;
   }
   .table-bordered th,
   .table-bordered td {
-    border: 1px solid #ddd !important;
+    border: 0 !important;
   }
 }
 
@@ -596,7 +596,7 @@ hr {
   margin-top: 1rem;
   margin-bottom: 1rem;
   border: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 0px transparent !important;
 }
 
 small,
@@ -638,7 +638,7 @@ mark,
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
   font-size: 1.25rem;
-  border-left: 0.25rem solid #eceeef;
+  border-left: 0px transparent !important;
 }
 
 .blockquote-footer {
@@ -655,7 +655,7 @@ mark,
   padding-right: 1rem;
   padding-left: 0;
   text-align: right;
-  border-right: 0.25rem solid #eceeef;
+  border-right: 0px transparent !important;
   border-left: 0;
 }
 
@@ -2086,16 +2086,16 @@ pre code {
 .table td {
   padding: 0.75rem;
   vertical-align: top;
-  border-top: 1px solid #eceeef;
+  border-top: 0px transparent !important;
 }
 
 .table thead th {
   vertical-align: bottom;
-  border-bottom: 2px solid #eceeef;
+  border-bottom: 0px transparent !important;
 }
 
 .table tbody + tbody {
-  border-top: 2px solid #eceeef;
+  border-top: 0px transparent !important;
 }
 
 .table .table {
@@ -2108,17 +2108,17 @@ pre code {
 }
 
 .table-bordered {
-  border: 1px solid #eceeef;
+  border: 0px transparent !important;
 }
 
 .table-bordered th,
 .table-bordered td {
-  border: 1px solid #eceeef;
+  border: 0px transparent !important;
 }
 
 .table-bordered thead th,
 .table-bordered thead td {
-  border-bottom-width: 2px;
+  border-bottom-width: 0px transparent !important;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {

@@ -8,7 +8,7 @@
 
 </head>
 
-<body onload="myPlaces(arr)" id="MasterBody" runat="server" style="padding-left:15px;padding-right: 15px;">
+<body onload="myPlaces(arr)" id="MasterBody" runat="server" style="padding-left:10px;padding-right: 10px;border:0;border-color: transparent;!important">
 
 <div id="PageBody" runat="server">
 
@@ -30,7 +30,7 @@
     </div>
 
     <!-- T A B L E -->
-    <table id="table_locs" style="width:100%;font-size:larger;webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;!important;" class="tb1-header table table-bordered table-responsive "> <!--tableorter-->
+    <table id="table_locs" style="!important border:0;!important width:100%;font-size:larger;webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;!important;" class="tb1-header table table-bordered table-responsive "> <!--tableorter-->
         <thead> <!---webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;-->
         <tr style="font-weight: bold;">
             <th>Index</th>
@@ -45,13 +45,47 @@
 
         <tbody id="tbl">
         <tr class="rowp">
-            <td>1</td>
+            <td><div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+                <main class="mdl-layout__content mdl-color--grey-100">
+                    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+
+                        <!-- Container for the demo -->
+                        <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                            <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
+                                <h2 class="mdl-card__title-text">Twitter Authentication with Redirect</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                                <p>Sign in with your Twitter account below.</p>
+
+                                <!-- Button that handles sign-in/sign-out -->
+                                <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in with Twitter</button>
+
+                                <!-- Container where we'll display the user details -->
+                                <div class="quickstart-user-details-container">
+                                    Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
+                                    <div>Firebase auth <code>currentUser</code> object value:</div>
+                                    <pre><code id="quickstart-account-details">null</code></pre>
+                                    <div>Twitter OAuth Token:</div>
+                                    <pre><code id="quickstart-oauthtoken">null</code></pre>
+                                    <div>Twitter OAuth Secret:</div>
+                                    <pre><code id="quickstart-oauthsecret">null</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div></td>
             <td>Place A</td>
             <td>-26.0594802,28.0609437</td>
             <td>5</td>
             <td class="DMi" id="pAMi"></td>
             <td class="DKm" id="pAKm"></td>
-            <td class="DM"  id="pAM" ></td>
+            <td class="DM"  id="pAM" style="width:400px">
+                <a class="twitter-timeline"  href="https://twitter.com/hashtag/Jozi" data-widget-id="891672658248683520">#Jozi Tweets</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+            </td>
         </tr>
 
         </tbody>
@@ -85,4 +119,19 @@
 
 </body>
 
+
+<!--FIREBASE added to webapp https://console.firebase.google.com/u/0/project/sprezzatweet/overview -->
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyDrCt3YNxXlf14s_FZPeNuFuMwOKJpW7wE",
+        authDomain: "sprezzatweet.firebaseapp.com",
+        databaseURL: "https://sprezzatweet.firebaseio.com",
+        projectId: "sprezzatweet",
+        storageBucket: "",
+        messagingSenderId: "372016960457"
+    };
+    firebase.initializeApp(config);
+</script>
 </html>
