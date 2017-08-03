@@ -1,9 +1,9 @@
 
 a{
-    color:#ffffff !important;
+    color:blue;
 }
 a:hover{
-    color: #ffffff !important;
+    color: black;
 }
 h1{
     font-size: 30px;

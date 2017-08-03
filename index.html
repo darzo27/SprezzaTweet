@@ -1,121 +1,301 @@
 <html>
-<head>
 
+<!-- Twitter’s widgets JavaScript For optimal web page performance & tracking widget JS events -->
+    <script>window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        t._e = [];
+        t.ready = function(f) {
+        t._e.push(f);
+        };
+
+        return t;
+        }(document, "script", "twitter-wjs"));
+    </script>
+
+    <style> 
+        #box {
+        border: 1px solid #a1a1a1;
+        padding: 10px 30px; 
+        background: #ffffff;
+        /*width: 300px;*/
+        border-radius: 10px;}
+    </style>
+
+
+<head>
     <!-- bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/bootstrap-grid.css" rel="stylesheet" />
     <link href="css/stylepg.css" rel="stylesheet" />
 
+    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+
+    <!-- Twitter Auth -->
+    <meta charset=utf-8 />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Twitter Sign In Example</title>
+
+        <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+
+        <script type="text/javascript">
+
+        //Function called when clicking the Login/Logout button.
+        // [START buttoncallback]
+        function toggleSignIn() {
+          if (!firebase.auth().currentUser) {
+            // [START createprovider]
+            var provider = new firebase.auth.TwitterAuthProvider();
+            // [END createprovider]
+            // [START signin]
+            firebase.auth().signInWithRedirect(provider);
+            // [END signin]
+          } else {
+            // [START signout]
+            firebase.auth().signOut();
+            // [END signout]
+          }
+          // [START_EXCLUDE]
+          document.getElementById('quickstart-sign-in').disabled = true;
+          document.getElementById("displayname").innerHTML = "Sign in to see <em>your</em> timeline.";
+          // [END_EXCLUDE]
+        }
+        // [END buttoncallback]
+
+        /**
+         * initApp handles setting up UI event listeners and registering Firebase auth listeners:
+         *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
+         *    out, and that is where we update the UI.
+         *  - firebase.auth().getRedirectResult(): This promise completes when the user gets back from
+         *    the auth redirect flow. It is where you can get the OAuth token and secret from the IDP.
+         */
+        function initApp() {
+          // Result from Redirect auth flow.
+          // [START getidptoken]
+          firebase.auth().getRedirectResult().then(function(result) {
+            if (result.credential) {
+              // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
+              // You can use these server side with your app's credentials to access the Twitter API.
+              var token = result.credential.accessToken;
+              var secret = result.credential.secret;
+              // [START_EXCLUDE]
+            } else {
+              // [END_EXCLUDE]
+            }
+            // The signed-in user info.
+            var user = result.user;
+          }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // [START_EXCLUDE]
+            if (errorCode === 'auth/account-exists-with-different-credential') {
+              alert('You have already signed up with a different auth provider for that email.');
+              // If you are using multiple auth providers on your app you should handle linking
+              // the user's accounts here.
+            } else {
+              console.error(error);
+            }
+            // [END_EXCLUDE]
+          });
+          // [END getidptoken]
+
+          // Listening for auth state changes.
+          // [START authstatelistener]
+          firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+              // User is signed in.
+              var displayName = user.displayName;
+              localStorage.setItem("displayName",displayName);
+              var email = user.email;
+              var emailVerified = user.emailVerified;
+              var photoURL = user.photoURL;
+              localStorage.setItem("photoURL",photoURL);
+              var isAnonymous = user.isAnonymous;
+              var uid = user.uid;
+              localStorage.setItem("uid",uid);
+              var providerData = user.providerData;
+              // [START_EXCLUDE]
+              document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
+              document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+
+              document.getElementById("displayname").innerHTML = localStorage.getItem("displayName");
+              document.getElementById("myImg").src = localStorage.getItem("photoURL");
+
+              // [END_EXCLUDE]
+            } else {
+              // User is signed out.
+              // [START_EXCLUDE]
+              document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+              document.getElementById('quickstart-sign-in').textContent = 'Sign in with Twitter';
+              // [END_EXCLUDE]
+            }
+            // [START_EXCLUDE]
+            document.getElementById('quickstart-sign-in').disabled = false;
+            // [END_EXCLUDE]
+          });
+          // [END authstatelistener]
+          document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
+        }
+
+        window.onload = function() {
+            document.getElementById('quickstart-sign-in').disabled = false;
+          initApp();
+        };
+      </script>
 </head>
 
 <body onload="myPlaces(arr)" id="MasterBody" runat="server" style="padding-left:10px;padding-right: 10px;border:0;border-color: transparent;!important">
 
-<div id="PageBody" runat="server">
+    <div id="PageBody" runat="server">
 
-    <h1>SprezzaTweet</h1>
+        <!-- <h1>SprezzaTweet</h1> -->
+        <!-- SprezzaTweet Header -->
+        <div style="width:100%; height:100px; position: absolute; align:top; top:0;left:0;position: fixed;text-align: center;background-color: white; ">
+            <h2 style="font-family: 'Orbitron', sans-serif; text-align: top; margin-top: 10;color:black"><span style="font-weight:100 !important;">Sprezza</span>Tweet</h2>
 
-    <!--Toggles for Latest, Popular, Watching-->
-    <div class="options clearfix" style="float:right">
-        <div class="ck-button">
-            <label><input type="checkbox" value="1" name="DMi" checked="checked"><span>Latest</span></label>
+            <!--Toggles for Latest, Popular, Watching-->
+            <div class="options clearfix" style="float:right;color:green !important; padding-right:10px;">
+                <div class="ck-button">
+                    <label><input type="checkbox" value="1" name="UTL" checked="checked"><span>Timeline</span></label>
+                </div>
+                <div class="ck-button">
+                    <label><input type="checkbox" value="1" name="DMi" checked="checked"><span>Latest</span></label>
+                </div>
+
+                <div class="ck-button">
+                    <label><input type="checkbox" value="1" name="DKm" checked="checked"><span>Popular</span></label>
+                </div>
+
+                <div class="ck-button">
+                    <label><input type="checkbox" value="1" name="DM" checked="checked"><span>Watching</span></label>
+                </div>
+            </div>
         </div>
 
-        <div class="ck-button">
-            <label><input type="checkbox" value="1" name="DKm" checked="checked"><span>Popular</span></label>
-        </div>
+        <br/>
+        <br/>
+        <br/>
 
-        <div class="ck-button">
-            <label><input type="checkbox" value="1" name="DM" checked="checked"><span>Watching</span></label>
-        </div>
-    </div>
+        <!-- Get data to display on User Profile. Data saved when signing user in-->
+        <script type="text/javascript">
+            window.onload = function() {                
+                var displayName = localStorage.getItem("displayName");
+                document.getElementById("displayname").innerHTML = displayname;
+                document.getElementById("myImg").src = localStorage.getItem("photoURL");
+                document.getElementById("Timeline").innerHTML = "Tweets by " + displayname;
+                document.getElementById("Timeline").setAttribute("https://twitter.com/" + displayname);
+                
+                localStorage.getItem("uid");
+                localStorage.getItem("token");
+                localStorage.getItem("secret");
+            }
+        </script>
 
-    <!-- T A B L E -->
-    <table id="table_locs" style="!important border:0;!important width:100%;font-size:larger;webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;!important;" class="tb1-header table table-bordered table-responsive "> <!--tableorter-->
-        <thead> <!---webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;-->
-        <tr style="font-weight: bold;">
-            <th>Index</th>
-            <th>Name</th>
-            <th>Lat / Long</th>
-            <th>Rating</th>
-            <th class="DMi">Latest</th>
-            <th class="DKm">Popular</th>
-            <th class="DM">Watching</th>
-        </tr>
-        </thead>
+        <!-- User Profile -->
+        <div style="float:left; width: 18%; /*height:30%;*/ padding-left: 10px; padding-right: 10px; padding-top:15px; position: absolute; align:top; top:40;left:0;position: fixed;">
+            <div id="box">
+                <div>
+                    <img id="photoURL" src="https://pbs.twimg.com/profile_images/788466850652913664/d1GRCWgd_normal.jpg" height="100px" width="100px" style="align-content:center; padding-top:5px;">
 
-        <tbody id="tbl">
-        <tr class="rowp">
-            <td><div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+                    <h5 id="displayname">Sign in to see <em>your</em> timeline.</h5>
+                </div>
 
-                <main class="mdl-layout__content mdl-color--grey-100">
-                    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+                <div id="authZone">
+                    <!-- <p>Looks like you need to sign in first</p> -->
+                    <!-- Button that handles sign-in/sign-out -->
+                    <button id="quickstart-sign-in" disabled class="mdl-button mdl-js-button mdl-button--raised" >Sign in with Twitter</button>
 
-                        <!-- Container for the demo -->
-                        <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-                            <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
-                                <h2 class="mdl-card__title-text">Twitter Authentication with Redirect</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                                <p>Sign in with your Twitter account below.</p>
-
-                                <!-- Button that handles sign-in/sign-out -->
-                                <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in with Twitter</button>
-
-                                <!-- Container where we'll display the user details -->
-                                <div class="quickstart-user-details-container">
-                                    Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
-                                    <div>Firebase auth <code>currentUser</code> object value:</div>
-                                    <pre><code id="quickstart-account-details">null</code></pre>
-                                    <div>Twitter OAuth Token:</div>
-                                    <pre><code id="quickstart-oauthtoken">null</code></pre>
-                                    <div>Twitter OAuth Secret:</div>
-                                    <pre><code id="quickstart-oauthsecret">null</code></pre>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Container where we'll display the user details -->
+                    <div class="quickstart-user-details-container">
+                        Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
                     </div>
-                </main>
-            </div></td>
-            <td>Place A</td>
-            <td>-26.0594802,28.0609437</td>
-            <td>5</td>
-            <td class="DMi" id="pAMi"></td>
-            <td class="DKm" id="pAKm"></td>
-            <td class="DM"  id="pAM" style="width:400px">
-                <a class="twitter-timeline"  href="https://twitter.com/hashtag/Jozi" data-widget-id="891672658248683520">#Jozi Tweets</a>
-                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                    <br/>
+                    <p style="font-size:12px;"><em>Working</em> Twitter Authentication and app redirect <a href="www.sprezzatweet.firebaseapp.com/index_auth.html" style="color:bluw !important;">here</a></p>
+                </div>
+            </div>
 
-            </td>
-        </tr>
-
-        </tbody>
-    </table>
-
-    <!-- <br/>-->
-
-    <footer>
-        by Darshan Kassen <br/>
-        dkassen27@gmail.com
-    </footer>
-
-
-    <!-- FORMATTING -->
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-3.1.1.js"></script>
-
-    <!--FEATURES--
-    <!--ToggleCols-->
-    <link href="Content/togglecols/css/bootstrap-theme.min.css" rel="stylesheet" />
-    <link href="Content/togglecols/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="Content/togglecols/css/jquery-ui.css" rel="stylesheet" />
-    <link href="Content/togglecols/css/style.css" rel="stylesheet" />
-    <script src="Content/togglecols/js/index.js"></script>
-    <script src="Content/togglecols/js/jquery-ui.min.js"></script>
-    <script src="Content/togglecols/js/jquery.min.js"></script>
+            <div style="margin: auto; padding-left:25px; padding-top:10px">
+                <!-- Tweet button -->
+                <a href="https://twitter.com/intent/tweet?screen_name=darzo27" class="twitter-mention-button" data-size="large" data-text="Stunning Twitter reader! SprezzaTweet here: https://goo.gl/os28TL" data-related="darzo27" data-show-count="false" style="width: 18%; align-content:center;">Tweet to the creator @darzo27</a>
+                <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+        </div>
 
 
 
-</div>
+        <br/>
+        <br/>
+
+                <!-- T A B L E -->
+        <table id="table_locs" style="float:right;border:0 !important;width:82% !important;font-size:larger;webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black!important;" class="tb1-header table table-bordered table-responsive "> <!--tableorter-->
+            
+                <td class="UTL" id=pUTL style="width:450px">
+                    <!-- Defined user timeline -->
+                    <div>           
+                        <a class="twitter-timeline" data-width="800" data-height="1000" data-dnt="true" href="https://twitter.com/DarZo27">Tweets by DarZo27</a>
+                        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </div>
+                </td>
+
+                <td class="DMi" id="pAMi" style="width:400px">
+                    <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/hashtag/Johannesburg" data-widget-id="891672658248683520">#Johannesburg Tweets</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script> 
+                </td>
+                
+                <td class="DKm" id="pAKm" style="width:400px">
+                    <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/hashtag/CapeTown" data-widget-id="892906217605038080">#CapeTown Tweets</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          
+                </td>
+                
+                <td class="DM"  id="pAM" style="width:400px">
+                    <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/hashtag/Durban" data-widget-id="892903336042782720">#Durban Tweets</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>       
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <!-- <br/>-->
+
+        <!-- F O O T E R -->
+        <footer>
+            by Darshan Kassen <br/>
+            dkassen27@gmail.com
+        </footer>
+
+
+        <!-- FORMATTING -->
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-3.1.1.js"></script>
+
+        <!--FEATURES--
+        <!--ToggleCols-->
+        <link href="Content/togglecols/css/bootstrap-theme.min.css" rel="stylesheet" />
+        <link href="Content/togglecols/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="Content/togglecols/css/jquery-ui.css" rel="stylesheet" />
+        <link href="Content/togglecols/css/style.css" rel="stylesheet" />
+        <script src="Content/togglecols/js/index.js"></script>
+        <script src="Content/togglecols/js/jquery-ui.min.js"></script>
+        <script src="Content/togglecols/js/jquery.min.js"></script>
+    </div>
 
 </body>
 

@@ -50,7 +50,9 @@
 	          // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
 	          // You can use these server side with your app's credentials to access the Twitter API.
 	          var token = result.credential.accessToken;
+	          localStorage.setItem("token",token);
 	          var secret = result.credential.secret;
+	          localStorage.setItem("secret",secret);
 	          // [START_EXCLUDE]
 	          document.getElementById('quickstart-oauthtoken').textContent = token;
 	          document.getElementById('quickstart-oauthsecret').textContent = secret;
@@ -87,11 +89,14 @@
 	        if (user) {
 	          // User is signed in.
 	          var displayName = user.displayName;
+	          localStorage.setItem("displayName",displayName);
 	          var email = user.email;
 	          var emailVerified = user.emailVerified;
 	          var photoURL = user.photoURL;
+	          localStorage.setItem("photoURL",photoURL);
 	          var isAnonymous = user.isAnonymous;
 	          var uid = user.uid;
+	          localStorage.setItem("uid",uid);
 	          var providerData = user.providerData;
 	          // [START_EXCLUDE]
 	          document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';

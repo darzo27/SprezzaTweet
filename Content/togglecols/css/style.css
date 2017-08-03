@@ -33,6 +33,6 @@
     top:-20px;
 }
 .ck-button input:checked + span {
-    color:#fff;
+    color:#25b7c4;  /*fff*/
 }
 
